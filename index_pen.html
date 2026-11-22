@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>if (location.protocol === "http:" && location.hostname !== "localhost") { location.replace("https:" + location.href.substring(location.protocol.length)); }</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GLP-1 Pen Click Calculator: Ozempic, Wegovy, Mounjaro</title>
+<meta name="description" content="See how many clicks match a given dose on an Ozempic, Wegovy FlexTouch or Mounjaro KwikPen. For information only; does not replace your prescriber's instructions.">
+<link rel="canonical" href="https://penclick.app/">
+<link rel="alternate" hreflang="en" href="https://penclick.app/">
+<link rel="alternate" hreflang="pl" href="https://tylekliknij.pl/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://penclick.app/">
+<meta property="og:title" content="GLP-1 Pen Click Calculator">
+<meta property="og:description" content="Pick a drug, pen and dose to see the number of clicks and the volume. For information only.">
+<meta property="og:image" content="https://penclick.app/penclick-hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://penclick.app/penclick-hero.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"MedicalWebPage","inLanguage":"en","name":"GLP-1 Pen Click Calculator","url":"https://penclick.app/","dateModified":"2026-11-22","author":{"@type":"Person","name":"Stanisław Dąbrowiecki","honorificPrefix":"Prof.","jobTitle":"Surgeon"}}</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b6b6f'/%3E%3Cpath d='M16 6v13m0 0l-5-5m5 5l5-5M9 25h14' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: one narrow column, tool on top, result under the form, footer with practice details */
+:root {
+  --bg: #f3f6f6;
+  --surface: #ffffff;
+  --ink: #12282b;
+  --muted: #526669;
+  --line: #d5e0e1;
+  --accent: #0b6b6f;
+  --accent-ink: #ffffff;
+  --warn-bg: #fff4dd;
+  --warn-line: #e3b45a;
+  --warn-ink: #5c3d00;
+  --ok-bg: #e3f3ec;
+  --ok-ink: #14553a;
+  --font: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --p1: #fff0f4; --p2: #ffe6ed; --p3: #ffdbe5; --p4: #ffd0dd; --p5: #ffc5d5; --p6: #ffbacb;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1a1c; --surface: #152427; --ink: #e6f0f0; --muted: #9db4b6; --line: #29403f;
+    --accent: #52c3c7; --accent-ink: #062325;
+    --warn-bg: #3a2e12; --warn-line: #8a6a24; --warn-ink: #f3dcaa;
+    --ok-bg: #143427; --ok-ink: #a6e3c5;
+    --p1: #36202a; --p2: #3e2530; --p3: #462a37; --p4: #4e2f3e; --p5: #563445; --p6: #5f3a4c;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1a1c; --surface: #152427; --ink: #e6f0f0; --muted: #9db4b6; --line: #29403f;
+  --accent: #52c3c7; --accent-ink: #062325;
+  --warn-bg: #3a2e12; --warn-line: #8a6a24; --warn-ink: #f3dcaa;
+  --ok-bg: #143427; --ok-ink: #a6e3c5;
+  --p1: #36202a; --p2: #3e2530; --p3: #462a37; --p4: #4e2f3e; --p5: #563445; --p6: #5f3a4c;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.5 var(--font); }
+main { max-width: 640px; margin: 0 auto; padding: 20px 16px 40px; display: flex; flex-direction: column; gap: 16px; }
+h1 { font-size: 26px; line-height: 1.15; margin: 4px 0 0; font-weight: 800; text-wrap: balance; letter-spacing: -0.01em; }
+h2 { font-size: 17px; margin: 0 0 8px; font-weight: 700; text-wrap: balance; }
+p { margin: 0; }
+.lead { color: var(--muted); }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.warn { background: var(--warn-bg); border: 1px solid var(--warn-line); color: var(--warn-ink); border-radius: 12px; padding: 12px 14px; font-size: 14.5px; }
+.warn strong { font-weight: 700; }
+form { display: flex; flex-direction: column; gap: 14px; }
+label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+
+.hero { display:block; width:100%; height:auto; border-radius:14px; border:1px solid var(--line); }
+.cards { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.card { font: inherit; justify-content: center; min-height: 88px; color: var(--ink); background: var(--bg); border: 2px solid var(--line); border-radius: 14px; padding: 10px 6px 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 48px; }
+.card:hover { border-color: var(--accent); }
+.card:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.card svg { width: 100%; max-width: 92px; height: auto; }
+.card .nm { font-weight: 800; font-size: 18px; line-height: 1.2; }
+.card .sub { font-size: 12px; color: var(--muted); line-height: 1.2; }
+.card[hidden] { display: none; }
+.cards.one { max-width: 100%; }
+#changeDrug { font: 600 15px var(--font); color: var(--accent); background: none; border: 0; padding: 10px 0 0; cursor: pointer; min-height: 44px; }
+#changeDrug:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+[hidden] { display: none !important; }
+select { width: 100%; font: 500 16px var(--font); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px 12px; min-height: 48px; }
+select:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+#result { display: flex; flex-direction: column; gap: 10px; }
+.big { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.big .n { font-size: 64px; line-height: 1; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
+.big .u { font-size: 20px; font-weight: 600; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0; }
+.facts div { background: var(--bg); border-radius: 8px; padding: 8px 10px; }
+.facts dt { font-size: 12.5px; color: var(--muted); }
+.facts dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.note { font-size: 14.5px; color: var(--muted); }
+.ok { background: var(--ok-bg); color: var(--ok-ink); border-radius: 10px; padding: 12px 14px; font-weight: 500; }
+details { border-top: 1px solid var(--line); padding: 10px 0; }
+details:first-of-type { border-top: 0; }
+summary { cursor: pointer; font-weight: 600; }
+details p { margin-top: 6px; color: var(--muted); font-size: 15px; }
+.doc { display: flex; flex-direction: column; gap: 10px; }
+.doc .name { font-size: 19px; font-weight: 800; }
+.doc ul { margin: 0; padding-left: 20px; }
+.doc li { margin: 2px 0; }
+.doc .more li { margin: 8px 0; }
+.doc .more a { color: var(--accent); font-weight: 700; }
+.cta { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 18px; border-radius: 10px; background: var(--accent); color: var(--accent-ink); font-weight: 700; text-decoration: none; }
+.contact { font-size: 15px; }
+.contact a { color: var(--accent); font-weight: 600; }
+.small { font-size: 13px; color: var(--muted); }
+.how ol { margin: 0 0 10px; padding-left: 22px; }
+.how li { margin: 6px 0; }
+.how .eq { font-variant-numeric: tabular-nums; font-weight: 600; }
+.how ul { margin: 0 0 8px; padding-left: 20px; }
+.how details ol, .how details ul { margin: 6px 0 0; color: var(--muted); font-size: 15px; }
+.how details p + p { margin-top: 8px; }
+.how details { border-top: 0; border-radius: 10px; padding: 10px 12px; margin-top: 8px; }
+.how details:first-of-type { margin-top: 0; }
+.how details:nth-of-type(1) { background: var(--p1); }
+.how details:nth-of-type(2) { background: var(--p2); }
+.how details:nth-of-type(3) { background: var(--p3); }
+.how details:nth-of-type(4) { background: var(--p4); }
+.how details:nth-of-type(5) { background: var(--p5); }
+.how > details { background: var(--p6); margin-top: 8px; }
+.how details p, .how details ol, .how details ul { color: var(--ink); }
+.how details ol.refs { font-size: 14px; }
+.how details ol.refs li { margin: 8px 0; overflow-wrap: anywhere; }
+.how details ol.refs a { color: var(--accent); }
+.how summary { padding: 2px 0; }
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: no-preference) { .big .n { transition: opacity .15s; } }
+
+/* About the author: subtle blue panel, clearly separated from the calculator */
+.box.doc { background: #e6f0fb; border: 1px solid #b4cff0; border-left: 5px solid #3b7dd8; }
+.box.doc .small { color: #3d566f; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .box.doc { background: #14263a; border-color: #2c4a6b; border-left-color: #5b9be6; }
+  :root:not([data-theme="light"]) .box.doc .small { color: #a9bfd6; }
+}
+:root[data-theme="dark"] .box.doc { background: #14263a; border-color: #2c4a6b; border-left-color: #5b9be6; }
+:root[data-theme="dark"] .box.doc .small { color: #a9bfd6; }
+/* Hernia panel: subtle green, separate from the blue obesity panel; contact box: plain */
+.box.doc.hernia { background: #e4f3ee; border: 1px solid #b3dccd; border-left: 5px solid #2f9e7a; }
+.box.doc.hernia .small { color: #3c5f54; }
+.box.contactbox { display: flex; flex-direction: column; gap: 6px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .box.doc.hernia { background: #122e27; border-color: #2a5a4b; border-left-color: #4fc4a0; }
+  :root:not([data-theme="light"]) .box.doc.hernia .small { color: #a6cdbf; }
+}
+:root[data-theme="dark"] .box.doc.hernia { background: #122e27; border-color: #2a5a4b; border-left-color: #4fc4a0; }
+:root[data-theme="dark"] .box.doc.hernia .small { color: #a6cdbf; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>GLP-1 pen click calculator</h1>
+    <p class="lead" style="margin-top:6px">Choose a drug, pen and dose to see how many clicks that is and what volume of medicine.</p>
+    <figure style="margin:14px 0 0"><img class="hero" src="penclick-hero.jpg" width="1400" height="933" alt="penclick.app: free pen click calculator for Ozempic, Wegovy FlexTouch and Mounjaro KwikPen" fetchpriority="high"></figure>
+  </header>
+
+  <div class="warn" role="note">
+    <strong>For information only.</strong> The author in no way recommends using the medicine contrary to your prescriber's instructions or the patient leaflet. The dose is set using the dose counter on the pen. Counting clicks is an unofficial method that manufacturers have not tested.
+  </div>
+
+  <section class="box" aria-labelledby="h-form">
+    <h2 id="h-form">Settings</h2>
+    <form id="f" onsubmit="return false">
+      <div id="drugPick">
+        <p id="drugLabel" style="font-weight:600;font-size:14px;margin-bottom:6px">Choose a drug</p>
+        <div class="cards" id="cards">
+          <button type="button" class="card" data-drug="oz" aria-label="Ozempic, semaglutide"><span class="nm">Ozempic</span><span class="sub">semaglutide</span></button>
+          <button type="button" class="card" data-drug="wg" aria-label="Wegovy, semaglutide"><span class="nm">Wegovy</span><span class="sub">semaglutide</span></button>
+          <button type="button" class="card" data-drug="mj" aria-label="Mounjaro KwikPen, tirzepatide"><span class="nm">Mounjaro</span><span class="sub">tirzepatide</span></button>
+        </div>
+        <button type="button" id="changeDrug" hidden>← Change drug</button>
+        <select id="drug" hidden aria-hidden="true" tabindex="-1">
+          <option value="oz">Ozempic</option>
+          <option value="mj">Mounjaro</option>
+          <option value="wg">Wegovy</option>
+        </select>
+      </div>
+      <p id="selectionHint" class="ok" role="status" hidden></p>
+      <div id="penRow" hidden>
+        <label for="pen">Choose the pen in your hand</label>
+        <select id="pen"></select>
+      </div>
+      <div id="doseRow" hidden>
+        <label for="dose">The dose you want to inject (as advised by your prescriber)</label>
+        <select id="dose"></select>
+      </div>
+    </form>
+  </section>
+
+  <section class="box" id="result" hidden aria-live="polite" aria-labelledby="h-res">
+    <h2 id="h-res">Result</h2>
+    <div id="out"></div>
+  </section>
+
+  <section class="box how" id="how" hidden aria-labelledby="h-how">
+    <h2 id="h-how">How it was calculated, and warnings</h2>
+    <div id="howOut"></div>
+    <details>
+      <summary>References</summary>
+      <ol class="refs">
+        <li>Komé AM, Chandran MM, Tungate Lopez SS, Buse JB, Klein KR. One size does not fit all: understanding microdosing semaglutide for diabetes in multidose pens. <em>Diabetes Care</em> 2025;48(3):e25–e27. <a href="https://doi.org/10.2337/dc24-2575" rel="noopener">doi:10.2337/dc24-2575</a></li>
+        <li>Eldor R, Avraham N, Rosenberg O, Shpigelman M, Golan-Cohen A, Cukierman-Yaffe T, Merzon E, Buch A. Gradual titration of semaglutide results in better treatment adherence and fewer adverse events: a randomized controlled open-label pilot study examining a 16-week flexible titration regimen versus label-recommended 8-week semaglutide titration regimen. <em>Diabetes Care</em> 2025;48(9):1607–1611. <a href="https://doi.org/10.2337/dc25-0690" rel="noopener">doi:10.2337/dc25-0690</a></li>
+        <li>Infante M, Seminara G, Fabbri A, Aversa A. Microdosing, fractional and split dosing of injectable GLP-1-based drugs: balancing potential benefits and risks. <em>Minerva Endocrinol (Torino)</em> 2026 (published online 13 Nov 2026). <a href="https://doi.org/10.23736/S2724-6507.26.04655-5" rel="noopener">doi:10.23736/S2724-6507.26.04655-5</a></li>
+        <li>Beck H, Clements JN. Considerations and challenges in microdosing of GLP-1-based receptor agonists. <em>Expert Opin Pharmacother</em> 2026 (published online 5 Oct 2026). <a href="https://doi.org/10.1080/14656566.2026.2740393" rel="noopener">doi:10.1080/14656566.2026.2740393</a></li>
+        <li>Trainer N. The &quot;microdosing&quot; dilemma: balancing patient anecdotes with clinical safety amid GLP-1 compounding restrictions. <em>J Am Assoc Nurse Pract</em> 2026 (published online 26 May 2026). <a href="https://doi.org/10.1097/JXX.0000000000001296" rel="noopener">doi:10.1097/JXX.0000000000001296</a></li>
+        <li>BC Children's Hospital, Division of Endocrinology and Diabetes. Semaglutide click-counting (clinical material for patients), 6 Feb 2024. <a href="https://bcchildrens.ca/media/6026/download" rel="noopener">bcchildrens.ca</a></li>
+        <li>Novo Nordisk. Wegovy FlexTouch 0.25 mg, 0.5 mg, 1 mg, 1.7 mg and 2.4 mg, solution for injection in pre-filled pen: package leaflet (includes concentrations, pen contents and pen instructions). electronic Medicines Compendium. <a href="https://www.medicines.org.uk/emc/product/13799/pil" rel="noopener">medicines.org.uk</a></li>
+        <li>Australian Diabetes Educators Association. Ozempic (semaglutide) and pen dosing by clicks, 2024 (includes the manufacturer's position that it does not state the volume per click). <a href="https://www.adea.com.au/wp-content/uploads/2024/03/OZEMPIC-semaglutide-and-Pen-Dosing-by-Clicks.pdf" rel="noopener">adea.com.au</a></li>
+        <li>ISMP Consumer MedSafety. Errors possible when microdosing (counting clicks) to dose weight loss medicines, 6 Jan 2025. <a href="https://www.consumermedsafety.org/safety-articles/errors-possible-when-microdosing-counting-clicks-to-dose-weight-loss-medicines" rel="noopener">consumermedsafety.org</a></li>
+      </ol>
+      <p class="small">Items 1–5 were found in PubMed. None of them reports a measured volume per click for the Wegovy pen.</p>
+    </details>
+  </section>
+
+  <section class="box" aria-labelledby="h-faq">
+    <h2 id="h-faq">Frequently asked questions</h2>
+    <details>
+      <summary>My prescription says "click until it shows 0.25". What does that mean?</summary>
+      <p>It means turning the dose selector until the dose counter in the pen window shows the prescribed dose and lines up with the pointer. It is not click counting. Then press the button all the way until the counter returns to 0, and count slowly to 6 before removing the needle.</p>
+    </details>
+    <details>
+      <summary>Why don't manufacturers recommend counting clicks?</summary>
+      <p>The accuracy of a dose set this way has not been tested. An error of a few clicks is a noticeable difference in dose, and at higher doses also in side effects. If your prescription and your pen do not match, ask your prescriber or pharmacist for the right pen.</p>
+    </details>
+    <details>
+      <summary>Where do these numbers come from?</summary>
+      <p>For Ozempic and Wegovy FlexTouch pens the calculator assumes about 0.0104 mL per click, which is about 72 clicks per 1 mg at 1.34 mg/mL (0.25 mg is about 18 clicks, 0.5 mg about 36). This value comes from publications and clinical materials, not from the manufacturer. For Mounjaro KwikPen it assumes 0.01 mL per click, which gives 60 clicks for a full 0.6 mL dose. The mechanical profile is set separately for each group of pens. Results are rounded to the nearest whole number. The detailed working for your chosen pen and dose is in the "How it was calculated" box.</p>
+    </details>
+    <details>
+      <summary>Which pens does this page cover?</summary>
+      <p>Multi-dose pens with a dose selector and clicks: Ozempic, Wegovy FlexTouch and Mounjaro KwikPen, with the strengths and concentrations listed in the pen menu. Single-dose auto-injectors (for example the Wegovy 7.2 mg single-dose pen) have no clicks and are not covered. Pen types and concentrations vary between countries, so check that your pen matches the label.</p>
+    </details>
+  </section>
+
+  <section class="box doc" aria-labelledby="h-doc">
+    <p class="small" id="h-doc">About the author</p>
+    <p class="name">Prof. Stanisław Dąbrowiecki<br>MD, PhD</p>
+    <p>Surgeon. I operate at Eskulap Hospital in Bydgoszcz, central Poland, with convenient road, air and rail connections.</p>
+    <ul>
+      <li>bariatric surgery: sleeve gastrectomy, revision operations</li>
+    </ul>
+    <p>GLP-1 medicines help many people. If treatment is not giving the results you hoped for, or you are looking for a lasting solution to obesity, we can talk about surgery.</p>
+    <p><a class="cta" href="https://mniejzoladka-pl.translate.goog/?_x_tr_sl=pl&amp;_x_tr_tl=en&amp;_x_tr_hl=en" rel="noopener">Obesity surgery: Polish website (mniejzoladka.pl)</a></p>
+    <p class="small">The website is in Polish and opens here with automatic English translation.</p>
+  </section>
+
+  <section class="box doc hernia" aria-labelledby="h-hernia">
+    <p class="small" id="h-hernia">Hernia repair</p>
+    <p><a class="cta" href="https://meshfreehernia.org">Mesh-free hernia repair, Desarda technique (meshfreehernia.org)</a></p>
+    <ul class="more">
+      <li><a href="https://przepuklinabezsiatki-pl.translate.goog/?_x_tr_sl=pl&amp;_x_tr_tl=en&amp;_x_tr_hl=en" rel="noopener">Mesh-free groin hernia repair website</a> (Polish address: przepuklinabezsiatki.pl; opens with automatic English translation)</li>
+    </ul>
+    <p>I have performed the Desarda operation since 2005, with over 800 operations. The inventor of the technique, Dr Mohan Desarda, lists me among surgeons who perform it: <a href="https://desarda.com/doctors-centers" rel="noopener">my entry on desarda.com</a>.</p>
+  </section>
+
+  <section class="box contactbox" aria-labelledby="h-contact">
+    <p class="small" id="h-contact">Contact</p>
+    <p class="contact">Phone and WhatsApp: <a href="tel:+48603751335">+48 603 751 335</a></p>
+    <p><a class="cta" href="https://wa.me/48603751335" rel="noopener">Message on WhatsApp</a></p>
+    <p class="contact">Email: <a href="mailto:s.dabrowiecki@outlook.com">s.dabrowiecki@outlook.com</a></p>
+  </section>
+
+  <p class="small">This page is for information only and does not replace medical advice, the patient leaflet or the instructions for use. Do not change the dose or the way you take the medicine without agreeing it with your prescriber. Concentrations come from the summaries of product characteristics; the number of clicks is an estimate.</p>
+</main>
+
+<script>
+(function () {
+  // Mechanical profile (volume of one click) is set separately for each group of pens.
+  // Semaglutide pens (Ozempic, Wegovy FlexTouch): about 72 clicks per 1 mg at 1.34 mg/mL
+  // (Kome 2025; BC Children's clinical materials: 18 clicks = 0.25 mg, 36 = 0.5 mg),
+  // i.e. 1 / (72 x 1.34) mL per click. This is not a value stated by the manufacturer.
+  var SEMA_ML_PER_CLICK = 1 / (72 * 1.34);
+  var MJ_ML_PER_CLICK = 0.01; // Mounjaro KwikPen: assumption of this page (60 clicks per 0.6 mL)
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = function (n, d) { return n.toLocaleString("en-GB", { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }); };
+
+  // Ozempic: concentration 1.34 mg/mL (2 mg/1.5 mL and 4 mg/3 mL pens), 2.68 mg/mL (8 mg/3 mL pen)
+  var OZ = [
+    { id: "oz15", label: "Ozempic 0.25 mg / 0.5 mg (1.5 mL pen)", vol: 1.5, conc: 1.34, marked: [0.25, 0.5], doses: [0.25, 0.5] },
+    { id: "oz1",  label: "Ozempic 1 mg (3 mL pen)",               vol: 3, conc: 1.34, marked: [1],         doses: [0.25, 0.5, 1] },
+    { id: "oz2",  label: "Ozempic 2 mg (3 mL pen)",               vol: 3, conc: 2.68, marked: [2],         doses: [0.25, 0.5, 1, 2] }
+  ];
+  // Mounjaro KwikPen: full dose = 0.6 mL = 60 clicks
+  var MJ_STR = [2.5, 5, 7.5, 10, 12.5, 15];
+  var MJ = MJ_STR.map(function (s) {
+    return { id: "mj" + s, label: "Mounjaro KwikPen " + fmt(s, s % 1 ? 1 : 0) + " mg", strength: s,
+             vol: 2.4, conc: s / 0.6, marked: [s], doses: MJ_STR.filter(function (d) { return d <= s; }) };
+  });
+
+  // Wegovy FlexTouch: fixed-dose pen; concentrations per the SmPC and the packs
+  var WG = [
+    { id: "wg025", label: "Wegovy 0.25 mg (1.5 mL pen)", vol: 1.5, conc: 0.68, marked: [0.25], doses: [0.25] },
+    { id: "wg05",  label: "Wegovy 0.5 mg (1.5 mL pen)",  vol: 1.5, conc: 1.34, marked: [0.5],  doses: [0.25, 0.5] },
+    { id: "wg1",   label: "Wegovy 1 mg (3 mL pen)",      vol: 3,   conc: 1.34, marked: [1],    doses: [0.25, 0.5, 1] },
+    { id: "wg17",  label: "Wegovy 1.7 mg (3 mL pen)",    vol: 3,   conc: 2.27, marked: [1.7],  doses: [0.25, 0.5, 1, 1.7] },
+    { id: "wg24",  label: "Wegovy 2.4 mg (3 mL pen)",    vol: 3,   conc: 3.2,  marked: [2.4],  doses: [0.25, 0.5, 1, 1.7, 2.4] }
+  ];
+  OZ.forEach(function (p) { p.mlClick = SEMA_ML_PER_CLICK; });
+  WG.forEach(function (p) { p.mlClick = SEMA_ML_PER_CLICK; });
+  MJ.forEach(function (p) { p.mlClick = MJ_ML_PER_CLICK; });
+  function mlTxt(x) { return fmt(x, Math.abs(x * 100 - Math.round(x * 100)) < 1e-9 ? 2 : 4); }
+  function pensFor(drug) { return drug === "oz" ? OZ : drug === "mj" ? MJ : drug === "wg" ? WG : []; }
+
+  function fill(sel, items, valueFn, labelFn, placeholder) {
+    sel.innerHTML = "";
+    if (placeholder) {
+      var ph = document.createElement("option");
+      ph.value = ""; ph.textContent = placeholder;
+      sel.appendChild(ph);
+    }
+    items.forEach(function (it, i) {
+      var o = document.createElement("option");
+      o.value = valueFn(it, i); o.textContent = labelFn(it, i);
+      sel.appendChild(o);
+    });
+  }
+
+  function choose(drug) {
+    $("drug").value = drug;
+    var cs = document.querySelectorAll(".card");
+    for (var i = 0; i < cs.length; i++) {
+      var sel = cs[i].getAttribute("data-drug") === drug;
+      cs[i].hidden = !sel; cs[i].setAttribute("aria-pressed", String(sel));
+    }
+    $("cards").className = "cards one";
+    $("drugLabel").textContent = "Selected drug";
+    $("changeDrug").hidden = false;
+    $("result").hidden = true;
+    $("how").hidden = true;
+    onDrug();
+    $("pen").focus();
+  }
+  function reset() {
+    var cs = document.querySelectorAll(".card");
+    for (var i = 0; i < cs.length; i++) { cs[i].hidden = false; cs[i].setAttribute("aria-pressed", "false"); }
+    $("selectionHint").hidden = true;
+    $("cards").className = "cards";
+    $("drugLabel").textContent = "Choose a drug";
+    $("changeDrug").hidden = true;
+    $("penRow").hidden = true; $("doseRow").hidden = true; $("result").hidden = true; $("how").hidden = true;
+  }
+
+  function onDrug() {
+    var drug = $("drug").value;
+    $("penRow").hidden = false; $("doseRow").hidden = false;
+    fill($("pen"), pensFor(drug), function (p, i) { return i; }, function (p) { return p.label; }, "— Choose —");
+    $("pen").value = "";
+    onPen();
+  }
+
+  function onPen() {
+    if ($("pen").value === "") {
+      fill($("dose"), [], function (d) { return d; }, function (d) { return d; }, "— Choose the pen first —");
+      $("dose").value = ""; $("dose").disabled = true;
+      render();
+      return;
+    }
+    var pen = pensFor($("drug").value)[+$("pen").value];
+    var prev = $("dose").value;
+    $("dose").disabled = false;
+    fill($("dose"), pen.doses, function (d) { return d; }, function (d) { return fmt(d, d % 1 ? (d * 100 % 10 === 0 ? 1 : 2) : 0) + " mg"; }, "— Choose —");
+    $("dose").value = (prev !== "" && pen.doses.indexOf(+prev) >= 0) ? prev : "";
+    render();
+  }
+
+  // Illustrative uncertainty of the volume of one click (an illustration, not a measurement: the manufacturer does not state this value)
+  var UNC = 0.10;
+  var sgn = function (x) { return (x >= 0 ? "+" : "−") + fmt(Math.abs(x), Math.abs(x) < 10 ? 1 : 0) + "%"; };
+  var mgTxt = function (x) { return fmt(x, 3) + " mg"; };
+  function doseTxt(d) { return fmt(d, d % 1 ? (Math.round(d * 100) % 10 === 0 ? 1 : 2) : 0); }
+  function doses(n) { return n === 1 ? "dose" : "doses"; }
+
+  function concStep(drug, pen) {
+    var total = pen.conc * pen.vol;
+    if (drug === "mj") {
+      return 'Concentration in the pen: the ' + fmt(pen.strength, pen.strength % 1 ? 1 : 0) + ' mg KwikPen delivers a full dose in 0.6 mL, so <span class="eq">' +
+        fmt(pen.strength, pen.strength % 1 ? 1 : 0) + ' mg ÷ 0.6 mL = ' + fmt(pen.conc, 2) + ' mg/mL</span>.';
+    }
+    return 'Concentration in the pen (from the summary of product characteristics): <span class="eq">' + fmt(pen.conc, 2) + ' mg/mL</span>' +
+      ' (the pen nominally contains about ' + fmt(total, 2) + ' mg in ' + fmt(pen.vol, 1) + ' mL).';
+  }
+  function assumptionText(drug) {
+    if (drug === "mj") return 'Assumption: one click is about 0.01 mL. For the Mounjaro KwikPen this gives 60 clicks for a full 0.6 mL dose. This is an assumption of this page, not a value stated by the manufacturer.';
+    var base = 'Assumption: one click is about 0.0104 mL, which is about 72 clicks per 1 mg at 1.34 mg/mL (0.25 mg is about 18 clicks, 0.5 mg about 36). This value comes from publications and clinical materials, not from the manufacturer.';
+    if (drug === "wg") return base + ' For Wegovy the same pen mechanism as Ozempic is assumed. This has not been confirmed by the manufacturer and is the weakest link in the calculation.';
+    return base;
+  }
+
+  function howMarked(drug, pen, dose) {
+    var d = doseTxt(dose);
+    return '<p>For a dose of <strong>' + d + ' mg</strong> nothing needs to be calculated: it is the dose this pen is designed for. You set it using the dose counter in the pen window, not by counting clicks.</p>' +
+      '<p class="note">A click calculation appears only when you choose a dose smaller than the one the pen is designed for.</p>';
+  }
+
+  function sec(title, body, open) {
+    return '<details' + (open ? ' open' : '') + '><summary>' + title + '</summary>' + body + '</details>';
+  }
+
+  // Expandable sections under the result. x: { errPct, partial, weeksBody, partialBody, wgBody }
+  function howCalc(drug, pen, dose, mlNeeded, clicksExact, clicks, x) {
+    var mgPer = pen.conc * pen.mlClick;
+    var given = clicks * mgPer;
+    var diff = (given - dose) / dose * 100;
+    var d = doseTxt(dose);
+    var lo = clicks * mgPer * (1 - UNC), hi = clicks * mgPer * (1 + UNC);
+    var dLo = (lo - dose) / dose * 100, dHi = (hi - dose) / dose * 100;
+    var less = clicks > 1 ? clicks - 1 : 0, more = clicks + 1;
+    var dLess = (less * mgPer - dose) / dose * 100, dMore = (more * mgPer - dose) / dose * 100;
+    var h = '';
+    h += sec('How it was calculated',
+      '<ol>' +
+      '<li>' + concStep(drug, pen) + '</li>' +
+      '<li>Volume needed: <span class="eq">' + d + ' mg ÷ ' + fmt(pen.conc, 2) + ' mg/mL = ' + fmt(mlNeeded, 3) + ' mL</span>.</li>' +
+      '<li>' + assumptionText(drug) + '</li>' +
+      '<li>Number of clicks: <span class="eq">' + fmt(mlNeeded, 3) + ' mL ÷ ' + mlTxt(pen.mlClick) + ' mL = ' + fmt(clicksExact, 2) + '</span>, rounded to the nearest whole number: <strong>' + clicks + '</strong>.</li>' +
+      '</ol>', false);
+    h += sec('How accurate this is',
+      '<ul>' +
+      '<li><strong>Rounding.</strong> ' + clicks + ' clicks is ' + mgTxt(given) + ', which is ' + sgn(diff) + ' relative to ' + d + ' mg. One click fewer (' + less + ') is ' + mgTxt(less * mgPer) + ' (' + sgn(dLess) + '), one click more (' + more + ') is ' + mgTxt(more * mgPer) + ' (' + sgn(dMore) + '). A miscount of one click is about ' + fmt(x.errPct, x.errPct < 10 ? 1 : 0) + '% of the dose. The fewer the clicks, the larger the relative error.</li>' +
+      '<li><strong>Uncertainty of the assumption.</strong> The real volume of a click is not known, so no probability of error can be given. As an example: if a click differed from the assumed value by ' + fmt(UNC * 100, 0) + '% in either direction, ' + clicks + ' clicks would deliver from ' + mgTxt(lo) + ' to ' + mgTxt(hi) + ' (' + sgn(dLo) + ' to ' + sgn(dHi) + ' relative to ' + d + ' mg). This is an illustration, not a measurement, and the real error may be larger.</li>' +
+      '<li><strong>Unofficial method.</strong> The number of clicks is an estimate, and counting clicks goes against the manufacturer\'s instructions, which say the dose is set on the dose counter in the pen window. Manufacturers have not tested the accuracy of this method.</li>' +
+      '</ul>', false);
+    if (x.weeksBody) h += sec('How many weeks a pen lasts and how long it may be used', x.weeksBody, false);
+    if (x.partialBody) h += sec('Important: a dose smaller than the pen is designed for', x.partialBody, false);
+    if (x.wgBody) h += sec('Wegovy: manufacturer\'s instructions', x.wgBody, false);
+    return h;
+  }
+
+  function render() {
+    if ($("pen").value === "" || $("dose").value === "") {
+      $("result").hidden = true; $("how").hidden = true;
+      return;
+    }
+    $("result").hidden = false; $("how").hidden = false; $("selectionHint").hidden = true;
+    var drug = $("drug").value, out = $("out");
+    var pen = pensFor(drug)[+$("pen").value], dose = +$("dose").value;
+    var isMarked = pen.marked.indexOf(dose) >= 0;
+    if (isMarked) {
+      $("howOut").innerHTML = howMarked(drug, pen, dose);
+      out.innerHTML =
+        '<div class="ok">This is the official dose for this pen: set it on the dose counter, without counting clicks.</div>' +
+        (drug === "mj"
+          ? '<p class="note">The Mounjaro KwikPen delivers a fixed dose (0.6 mL). Press the button as described in the instructions for use.</p>'
+          : '<p class="note">Turn the dose selector until the counter shows ' + doseTxt(dose) + ' mg and lines up with the pointer. After injecting, count slowly to 6.</p>');
+      return;
+    }
+    var mlNeeded = dose / pen.conc;
+    var clicksExact = mlNeeded / pen.mlClick;
+    var clicks = Math.round(clicksExact);
+    var mgPerClick = pen.conc * pen.mlClick;
+    var minMarked = Math.min.apply(null, pen.marked);
+    var partial = dose < minMarked - 1e-9;
+    var errPct = clicks > 0 ? 100 / clicks : 0;
+    var wgBody = drug === "wg"
+      ? '<p>The manufacturer\'s instructions expressly forbid setting the dose by counting clicks. The dose is set using the counter in the pen window. The numbers shown are only an estimate from an unofficial method.</p>' +
+        '<p>It has also not been confirmed that such a small dose can be set on this pen: the manufacturer\'s instructions cover setting the prescribed dose shown by the counter.</p>'
+      : '';
+    var totalMg = pen.conc * pen.vol;
+    var weeks = Math.floor(totalMg / dose + 1e-9);
+    var inUse = drug === "oz" ? 6 : 0; // Ozempic: 6 weeks after first use (SmPC)
+    var weeksBody = partial
+      ? '<p><strong>At this dose the medicine lasts for about ' + weeks + ' ' + doses(weeks) + '</strong> (doses of ' + doseTxt(dose) + ' mg).</p>' +
+        '<p>The pen nominally contains about ' + fmt(totalMg, 2) + ' mg. With one injection a week that is theoretically about ' + weeks + ' weeks.</p>' +
+        '<p>' + (inUse
+          ? (weeks > inUse
+              ? 'However, the manufacturer allows an Ozempic pen to be used for only ' + inUse + ' weeks after first use (stored below 30°C or in a refrigerator). After that there is no guarantee of the composition, sterility and effectiveness of the medicine, so the remainder (about ' + (weeks - inUse) + ' doses) should not be used. The real saving is therefore limited.'
+              : 'This fits within the ' + inUse + ' weeks the manufacturer allows after first use of an Ozempic pen.')
+          : ((drug === "mj" ? 'The Mounjaro KwikPen' : 'The Wegovy pen') + ' is designed for 4 doses in consecutive weeks. For longer use there are no manufacturer data on how long the medicine keeps in the pen, so check the in-use shelf life and storage conditions in the leaflet.')) + '</p>' +
+        '<p>It is not known what happens to the medicine after many weeks: it may lose potency, and an opened pen may become contaminated with bacteria.</p>'
+      : '';
+    var partialBody = partial
+      ? '<p>Drawing smaller doses from a pen with a larger strength goes against the leaflet. The pen is not designed for repeated dosing of small portions, and the manufacturer has not studied such use.</p>' +
+        '<p>Watch the in-use shelf life of the pen and the storage conditions in the leaflet, sterility (a new needle for every injection), and the fact that the medicine stays in the pen for a longer time.</p>'
+      : '';
+    $("howOut").innerHTML = howCalc(drug, pen, dose, mlNeeded, clicksExact, clicks,
+      { errPct: errPct, partial: partial, weeksBody: weeksBody, partialBody: partialBody, wgBody: wgBody });
+    out.innerHTML =
+      '<div class="big"><span class="n">' + clicks + '</span><span class="u">clicks</span></div>' +
+      '<dl class="facts">' +
+        '<div><dt>Dose</dt><dd>' + doseTxt(dose) + ' mg</dd></div>' +
+        '<div><dt>Volume</dt><dd>about ' + fmt(mlNeeded, 3) + ' mL</dd></div>' +
+        '<div><dt>Concentration</dt><dd>' + fmt(pen.conc, 2) + ' mg/mL</dd></div>' +
+        '<div><dt>One click</dt><dd>about ' + fmt(mgPerClick, 3) + ' mg</dd></div>' +
+      '</dl>';
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".card"), function (c) {
+    c.addEventListener("click", function () { choose(c.getAttribute("data-drug")); });
+  });
+  $("changeDrug").addEventListener("click", function () { reset(); var f = document.querySelector(".card"); if (f) f.focus(); });
+  $("pen").addEventListener("change", onPen);
+  $("dose").addEventListener("change", render);
+})();
+</script>
+</body>
+</html>
