@@ -14,7 +14,9 @@
 <meta property="og:url" content="https://penclick.app/">
 <meta property="og:title" content="GLP-1 Pen Click Calculator">
 <meta property="og:description" content="Pick a drug, pen and dose to see the number of clicks and the volume. For information only.">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://penclick.app/penclick-hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://penclick.app/penclick-hero.jpg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MedicalWebPage","inLanguage":"en","name":"GLP-1 Pen Click Calculator","url":"https://penclick.app/","dateModified":"2026-11-22","author":{"@type":"Person","name":"Stanisław Dąbrowiecki","honorificPrefix":"Prof.","jobTitle":"Surgeon"}}</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b6b6f'/%3E%3Cpath d='M16 6v13m0 0l-5-5m5 5l5-5M9 25h14' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,6 +73,7 @@ p { margin: 0; }
 form { display: flex; flex-direction: column; gap: 14px; }
 label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
 
+.hero { display:block; width:100%; height:auto; border-radius:14px; border:1px solid var(--line); }
 .cards { display: grid; grid-template-columns: 1fr; gap: 10px; }
 .card { font: inherit; justify-content: center; min-height: 88px; color: var(--ink); background: var(--bg); border: 2px solid var(--line); border-radius: 14px; padding: 10px 6px 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 48px; }
 .card:hover { border-color: var(--accent); }
@@ -130,6 +133,26 @@ details p { margin-top: 6px; color: var(--muted); font-size: 15px; }
 .how summary { padding: 2px 0; }
 [hidden] { display: none !important; }
 @media (prefers-reduced-motion: no-preference) { .big .n { transition: opacity .15s; } }
+
+/* About the author: subtle blue panel, clearly separated from the calculator */
+.box.doc { background: #e6f0fb; border: 1px solid #b4cff0; border-left: 5px solid #3b7dd8; }
+.box.doc .small { color: #3d566f; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .box.doc { background: #14263a; border-color: #2c4a6b; border-left-color: #5b9be6; }
+  :root:not([data-theme="light"]) .box.doc .small { color: #a9bfd6; }
+}
+:root[data-theme="dark"] .box.doc { background: #14263a; border-color: #2c4a6b; border-left-color: #5b9be6; }
+:root[data-theme="dark"] .box.doc .small { color: #a9bfd6; }
+/* Hernia panel: subtle green, separate from the blue obesity panel; contact box: plain */
+.box.doc.hernia { background: #e4f3ee; border: 1px solid #b3dccd; border-left: 5px solid #2f9e7a; }
+.box.doc.hernia .small { color: #3c5f54; }
+.box.contactbox { display: flex; flex-direction: column; gap: 6px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .box.doc.hernia { background: #122e27; border-color: #2a5a4b; border-left-color: #4fc4a0; }
+  :root:not([data-theme="light"]) .box.doc.hernia .small { color: #a6cdbf; }
+}
+:root[data-theme="dark"] .box.doc.hernia { background: #122e27; border-color: #2a5a4b; border-left-color: #4fc4a0; }
+:root[data-theme="dark"] .box.doc.hernia .small { color: #a6cdbf; }
 </style>
 </head>
 <body>
@@ -137,6 +160,7 @@ details p { margin-top: 6px; color: var(--muted); font-size: 15px; }
   <header>
     <h1>GLP-1 pen click calculator</h1>
     <p class="lead" style="margin-top:6px">Choose a drug, pen and dose to see how many clicks that is and what volume of medicine.</p>
+    <figure style="margin:14px 0 0"><img class="hero" src="penclick-hero.jpg" width="1400" height="933" alt="penclick.app: free pen click calculator for Ozempic, Wegovy FlexTouch and Mounjaro KwikPen" fetchpriority="high"></figure>
   </header>
 
   <div class="warn" role="note">
@@ -162,7 +186,7 @@ details p { margin-top: 6px; color: var(--muted); font-size: 15px; }
       </div>
       <p id="selectionHint" class="ok" role="status" hidden></p>
       <div id="penRow" hidden>
-        <label for="pen">The pen in your hand</label>
+        <label for="pen">Choose the pen in your hand</label>
         <select id="pen"></select>
       </div>
       <div id="doseRow" hidden>
@@ -219,22 +243,30 @@ details p { margin-top: 6px; color: var(--muted); font-size: 15px; }
 
   <section class="box doc" aria-labelledby="h-doc">
     <p class="small" id="h-doc">About the author</p>
-    <p class="name">Prof. Stanisław Dąbrowiecki, MD, PhD</p>
-    <p>Surgeon. I operate at Eskulap Hospital in Osielsko near Bydgoszcz, Poland.</p>
+    <p class="name">Prof. Stanisław Dąbrowiecki<br>MD, PhD</p>
+    <p>Surgeon. I operate at Eskulap Hospital in Bydgoszcz, central Poland, with convenient road, air and rail connections.</p>
     <ul>
-      <li>bariatric surgery: sleeve gastrectomy, OAGB/MGB gastric bypass, revision operations</li>
-      <li>hernia repair: Desarda mesh-free technique, Lichtenstein, laparoscopic TAPP</li>
+      <li>bariatric surgery: sleeve gastrectomy, revision operations</li>
     </ul>
     <p>GLP-1 medicines help many people. If treatment is not giving the results you hoped for, or you are looking for a lasting solution to obesity, we can talk about surgery.</p>
-    <p><a class="cta" href="https://meshfreehernia.org">Mesh-free hernia repair: meshfreehernia.org</a></p>
-    <p class="small" style="margin-top:4px">In Polish</p>
+    <p><a class="cta" href="https://mniejzoladka-pl.translate.goog/?_x_tr_sl=pl&amp;_x_tr_tl=en&amp;_x_tr_hl=en" rel="noopener">Obesity surgery: Polish website (mniejzoladka.pl)</a></p>
+    <p class="small">The website is in Polish and opens here with automatic English translation.</p>
+  </section>
+
+  <section class="box doc hernia" aria-labelledby="h-hernia">
+    <p class="small" id="h-hernia">Hernia repair</p>
+    <p><a class="cta" href="https://meshfreehernia.org">Mesh-free hernia repair, Desarda technique (meshfreehernia.org)</a></p>
     <ul class="more">
-      <li><a href="https://mniejzoladka.pl" rel="noopener">mniejzoladka.pl</a>: obesity surgery.</li>
-      <li><a href="https://przepuklinabezsiatki.pl" rel="noopener">przepuklinabezsiatki.pl</a>: mesh-free groin hernia repair (Desarda technique).</li>
+      <li><a href="https://przepuklinabezsiatki-pl.translate.goog/?_x_tr_sl=pl&amp;_x_tr_tl=en&amp;_x_tr_hl=en" rel="noopener">Mesh-free groin hernia repair website</a> (Polish address: przepuklinabezsiatki.pl; opens with automatic English translation)</li>
     </ul>
-    <p class="contact">Consultations: ul. Mierosławskiego 9/3, Bydgoszcz, Poland<br>
-      Phone: <a href="tel:+48603751335">+48 603 751 335</a><br>
-      Email: <a href="mailto:s.dabrowiecki@outlook.com">s.dabrowiecki@outlook.com</a></p>
+    <p>I have performed the Desarda operation since 2005, with over 800 operations. The inventor of the technique, Dr Mohan Desarda, lists me among surgeons who perform it: <a href="https://desarda.com/doctors-centers" rel="noopener">my entry on desarda.com</a>.</p>
+  </section>
+
+  <section class="box contactbox" aria-labelledby="h-contact">
+    <p class="small" id="h-contact">Contact</p>
+    <p class="contact">Phone and WhatsApp: <a href="tel:+48603751335">+48 603 751 335</a></p>
+    <p><a class="cta" href="https://wa.me/48603751335" rel="noopener">Message on WhatsApp</a></p>
+    <p class="contact">Email: <a href="mailto:s.dabrowiecki@outlook.com">s.dabrowiecki@outlook.com</a></p>
   </section>
 
   <p class="small">This page is for information only and does not replace medical advice, the patient leaflet or the instructions for use. Do not change the dose or the way you take the medicine without agreeing it with your prescriber. Concentrations come from the summaries of product characteristics; the number of clicks is an estimate.</p>
@@ -304,8 +336,6 @@ details p { margin-top: 6px; color: var(--muted); font-size: 15px; }
     $("changeDrug").hidden = false;
     $("result").hidden = true;
     $("how").hidden = true;
-    $("selectionHint").textContent = "You chose " + ({ oz: "Ozempic", wg: "Wegovy", mj: "Mounjaro" }[drug]) + ". Now choose the pen in your hand and the dose.";
-    $("selectionHint").hidden = false;
     onDrug();
     $("pen").focus();
   }
